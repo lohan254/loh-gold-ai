@@ -4,129 +4,386 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LOH GOLD AI</title>
+
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#090909;color:#f5f5f5;
- font-family:Arial,sans-serif;padding:18px
+* {
+  box-sizing: border-box;
 }
-header{
- display:flex;justify-content:space-between;
- align-items:center;border-bottom:1px solid #51401c;
- padding-bottom:18px
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: #090909;
+  color: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
-.logo{color:#d6ad45;font-size:24px;font-weight:bold}
-.tag{color:#aaa;font-size:12px}
-.card{
- background:#151515;border:1px solid #40351d;
- border-radius:12px;padding:17px;margin-top:17px
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 20px;
+  border-bottom: 1px solid #40351d;
 }
-h2{font-size:16px;color:#d6ad45;margin-top:0}
-.price{font-size:30px;font-weight:bold}
-.status{color:#e0b84e;font-weight:bold}
-.grid{
- display:grid;grid-template-columns:repeat(2,1fr);
- gap:10px
+
+.logo {
+  color: #d6ad45;
+  font-size: 23px;
+  font-weight: bold;
 }
-.metric{
- background:#202020;padding:13px;border-radius:9px
+
+.tag {
+  color: #aaa;
+  font-size: 11px;
 }
-.metric small{color:#999}
-.metric strong{display:block;margin-top:8px;font-size:18px}
-button{
- background:#d1a83d;color:#111;border:0;
- padding:11px 15px;border-radius:7px;
- font-weight:bold;cursor:pointer
+
+.card {
+  background: #151515;
+  border: 1px solid #40351d;
+  border-radius: 12px;
+  padding: 17px;
+  margin-top: 17px;
 }
-button.active{background:#fff}
-button:focus{outline:2px solid #e4c36d}
-.buttons{display:flex;gap:8px;flex-wrap:wrap}
-footer{text-align:center;color:#777;font-size:11px;margin-top:25px}
+
+h2 {
+  font-size: 16px;
+  color: #d6ad45;
+  margin-top: 0;
+}
+
+.price {
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+  margin: 12px 0;
+}
+
+.small {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.box {
+  background: #292929;
+  border-radius: 9px;
+  padding: 14px;
+  min-height: 85px;
+}
+
+.value {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.gold {
+  color: #e5bd55;
+}
+
+button, select {
+  background: #242424;
+  color: white;
+  border: 1px solid #a78335;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button.active {
+  background: #b38b35;
+  color: black;
+}
+
+button:disabled {
+  opacity: .6;
+}
+
+#signal {
+  font-size: 30px;
+  font-weight: bold;
+  color: #e5bd55;
+  margin: 15px 0;
+}
+
+.status {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.full {
+  width: 100%;
+  margin-top: 12px;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  font-size: 11px;
+  margin: 30px 0 15px;
+  line-height: 1.8;
+}
+
 </style>
 </head>
+
 <body>
 
 <header>
- <div>
-  <div class="logo">🖤 LOH GOLD AI</div>
-  <div class="tag">PRIVATE GOLD MARKET SCANNER</div>
- </div>
- <div class="status">● OFFLINE</div>
+  <div>
+    <div class="logo">🖤 LOH GOLD AI</div>
+    <div class="tag">PRIVATE GOLD TRADING SCANNER</div>
+  </div>
+  <div class="tag">FREE EDITION</div>
 </header>
 
-<section class="card">
- <h2>GOLD MARKET</h2>
- <div class="price">XAU/USD</div>
- <p class="tag">Gold vs US Dollar</p>
- <p class="status">Waiting for live market data</p>
- <p class="tag">No live price connected yet</p>
-</section>
+<!-- GOLD MARKET -->
 
-<section class="card">
- <h2>TIMEFRAME SCANNER</h2>
- <div class="buttons" id="timeframes">
-  <button class="active" data-tf="M5">M5</button>
-  <button data-tf="M15">M15</button>
-  <button data-tf="H1">H1</button>
-  <button data-tf="H4">H4</button>
- </div>
- <p id="selected">Selected timeframe: M5</p>
-</section>
+<div class="card">
+  <h2>LIVE GOLD MARKET</h2>
 
-<section class="card">
- <h2>AI SIGNAL</h2>
- <div class="price" id="signal">WAIT</div>
- <p class="tag">Scanner is not connected to market data.</p>
- <p class="status">No trade recommendation available</p>
-</section>
+  <div class="small">XAU / USD</div>
 
-<section class="card">
- <h2>TECHNICAL ANALYSIS</h2>
- <div class="grid">
-  <div class="metric">
-   <small>EMA 20</small>
-   <strong>--</strong>
+  <div class="price" id="liveGoldPrice">
+    Connecting...
   </div>
-  <div class="metric">
-   <small>EMA 50</small>
-   <strong>--</strong>
-  </div>
-  <div class="metric">
-   <small>RSI 14</small>
-   <strong>--</strong>
-  </div>
-  <div class="metric">
-   <small>MACD</small>
-   <strong>--</strong>
-  </div>
- </div>
-</section>
 
-<section class="card">
- <h2>TRADE PLANNING</h2>
- <div class="grid">
-  <div class="metric"><small>Entry</small><strong>--</strong></div>
-  <div class="metric"><small>Stop Loss</small><strong>--</strong></div>
-  <div class="metric"><small>Take Profit</small><strong>--</strong></div>
-  <div class="metric"><small>Risk / Reward</small><strong>--</strong></div>
- </div>
-</section>
+  <div class="small" id="goldUpdated">
+    Waiting for market data...
+  </div>
+
+  <button class="full" onclick="updateGoldPrice()">
+    REFRESH GOLD PRICE
+  </button>
+</div>
+
+<!-- AI SIGNAL -->
+
+<div class="card">
+  <h2>AI SIGNAL</h2>
+
+  <div id="signal">WAIT</div>
+
+  <div class="status" id="signalReason">
+    Waiting for verified market analysis.
+  </div>
+
+  <div class="gold" style="margin-top:15px">
+    No trade recommendation available
+  </div>
+</div>
+
+<!-- TIMEFRAME -->
+
+<div class="card">
+  <h2>SELECT TIMEFRAME</h2>
+
+  <div class="grid">
+    <button class="active" onclick="selectTimeframe(this,'1m')">1 MIN</button>
+    <button onclick="selectTimeframe(this,'5m')">5 MIN</button>
+    <button onclick="selectTimeframe(this,'15m')">15 MIN</button>
+    <button onclick="selectTimeframe(this,'1h')">1 HOUR</button>
+    <button onclick="selectTimeframe(this,'4h')">4 HOURS</button>
+    <button onclick="selectTimeframe(this,'1d')">1 DAY</button>
+  </div>
+
+  <p class="small" id="selectedTimeframe">
+    Selected timeframe: 1m
+  </p>
+</div>
+
+<!-- TECHNICAL ANALYSIS -->
+
+<div class="card">
+  <h2>TECHNICAL ANALYSIS</h2>
+
+  <div class="grid">
+
+    <div class="box">
+      <div>EMA 20</div>
+      <div class="value gold" id="ema20">--</div>
+    </div>
+
+    <div class="box">
+      <div>EMA 50</div>
+      <div class="value gold" id="ema50">--</div>
+    </div>
+
+    <div class="box">
+      <div>RSI 14</div>
+      <div class="value gold" id="rsi14">--</div>
+    </div>
+
+    <div class="box">
+      <div>MACD</div>
+      <div class="value gold" id="macd">--</div>
+    </div>
+
+  </div>
+
+  <p class="small" id="analysisStatus">
+    Historical candle data is required to calculate indicators.
+  </p>
+</div>
+
+<!-- TRADE PLANNING -->
+
+<div class="card">
+  <h2>TRADE PLANNING</h2>
+
+  <div class="grid">
+
+    <div class="box">
+      <div>Entry</div>
+      <div class="value" id="entry">--</div>
+    </div>
+
+    <div class="box">
+      <div>Stop Loss</div>
+      <div class="value" id="stopLoss">--</div>
+    </div>
+
+    <div class="box">
+      <div>Take Profit</div>
+      <div class="value" id="takeProfit">--</div>
+    </div>
+
+    <div class="box">
+      <div>Risk / Reward</div>
+      <div class="value" id="riskReward">--</div>
+    </div>
+
+  </div>
+
+  <p class="small">
+    Trade levels will remain unavailable until verified
+    technical analysis is connected.
+  </p>
+</div>
+
+<!-- DISCLAIMER -->
 
 <footer>
- LOH GOLD AI © 2026 · PRIVATE EDITION<br>
- XAU/USD ONLY · ANALYSIS TOOL · NOT FINANCIAL ADVICE
+  LOH GOLD AI © 2026 · FREE EDITION<br>
+  XAU/USD ONLY<br>
+  ANALYSIS TOOL · NOT FINANCIAL ADVICE
 </footer>
 
 <script>
-document.querySelectorAll("#timeframes button").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  document.querySelectorAll("#timeframes button")
-   .forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("selected").textContent=
-   "Selected timeframe: "+btn.dataset.tf;
- });
-});
+
+// TIMEFRAME SELECTION
+
+function selectTimeframe(button, timeframe) {
+
+  document.querySelectorAll(".grid button")
+    .forEach(b => b.classList.remove("active"));
+
+  button.classList.add("active");
+
+  document.getElementById("selectedTimeframe")
+    .textContent = "Selected timeframe: " + timeframe;
+
+  document.getElementById("analysisStatus")
+    .textContent =
+    "Waiting for historical candle data for " + timeframe;
+
+  resetAnalysis();
+}
+
+
+// RESET ANALYSIS
+
+function resetAnalysis() {
+
+  document.getElementById("ema20").textContent = "--";
+  document.getElementById("ema50").textContent = "--";
+  document.getElementById("rsi14").textContent = "--";
+  document.getElementById("macd").textContent = "--";
+
+  document.getElementById("entry").textContent = "--";
+  document.getElementById("stopLoss").textContent = "--";
+  document.getElementById("takeProfit").textContent = "--";
+  document.getElementById("riskReward").textContent = "--";
+
+  document.getElementById("signal").textContent = "WAIT";
+
+  document.getElementById("signalReason").textContent =
+    "No verified technical signal available.";
+}
+
+
+// LIVE GOLD PRICE
+
+async function updateGoldPrice() {
+
+  const priceElement =
+    document.getElementById("liveGoldPrice");
+
+  const updatedElement =
+    document.getElementById("goldUpdated");
+
+  priceElement.textContent = "Loading...";
+
+  try {
+
+    const response = await fetch(
+      "https://api.gold-api.com/price/XAU/USD",
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      throw new Error("API request failed");
+    }
+
+    const data = await response.json();
+
+    const price = Number(data.price);
+
+    if (!Number.isFinite(price) || price <= 0) {
+      throw new Error("Invalid price data");
+    }
+
+    priceElement.textContent =
+      "$" + price.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+    updatedElement.textContent =
+      "Last updated: " + new Date().toLocaleTimeString();
+
+  }
+
+  catch (error) {
+
+    priceElement.textContent = "Connection error";
+
+    updatedElement.textContent =
+      "Could not retrieve Gold price. Try refreshing.";
+
+    console.error(error);
+
+  }
+
+}
+
+
+// INITIALIZE
+
+updateGoldPrice();
+
+setInterval(updateGoldPrice, 30000);
+
 </script>
 
 </body>
