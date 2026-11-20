@@ -4,465 +4,243 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LOH GOLD AI</title>
-
 <style>
 *{box-sizing:border-box}
-
-body{
- margin:0;
- padding:16px;
- background:#090909;
- color:#fff;
- font-family:Arial,sans-serif;
-}
-
-header{
- display:flex;
- justify-content:space-between;
- align-items:center;
- border-bottom:1px solid #55451d;
- padding:12px 0 20px;
-}
-
-.logo{
- color:#e6bd45;
- font-size:25px;
- font-weight:bold;
-}
-
-.subtitle{font-size:12px;color:#bbb;margin-top:5px}
-.edition{font-size:11px;color:#e6bd45}
-
-.card{
- background:linear-gradient(145deg,#292929,#151515);
- border:1px solid #655326;
- border-radius:16px;
- padding:18px;
- margin-top:18px;
- box-shadow:0 4px 15px #000;
-}
-
-h3{
- color:#e9c34f;
- margin:0 0 16px;
- font-size:17px;
-}
-
-.price{
- font-size:34px;
- font-weight:bold;
- margin:12px 0;
-}
-
-.muted{color:#aaa;font-size:13px}
-
-button{
- background:#292929;
- color:white;
- border:1px solid #d6ae3b;
- border-radius:9px;
- padding:13px 8px;
- font-weight:bold;
- cursor:pointer;
-}
-
-button:active{opacity:.7}
-
-.refresh{
- width:100%;
- margin-top:15px;
-}
-
-.gold{
- background:#e9bd37;
- color:#171717;
-}
-
-.grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px;
-}
-
-.signal{
- font-size:34px;
- font-weight:bold;
- margin:12px 0;
- color:#e9bd37;
-}
-
-.buy{color:#42d68b}
-.sell{color:#ff6666}
-.wait{color:#e9bd37}
-
-.timeframes button.selected{
- background:#e9bd37;
- color:#111;
-}
-
-input{
- width:100%;
- padding:13px;
- border-radius:8px;
- border:1px solid #a88a37;
- background:#111;
- color:white;
- margin:8px 0;
-}
-
-.stat{
- background:#111;
- padding:13px;
- border-radius:9px;
- border:1px solid #383838;
-}
-
-.stat strong{
- display:block;
- margin-top:8px;
- font-size:19px;
- color:#e9bd37;
-}
-
-.footer{
- text-align:center;
- color:#888;
- font-size:11px;
- padding:25px 0;
-}
-
-.status{color:#e9bd37;font-size:12px}
+body{margin:0;padding:16px;background:#090909;color:#f5f5f5;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #55451d;padding:12px 0 20px}
+.logo{color:#e6bd45;font-size:25px;font-weight:bold}.subtitle{font-size:12px;color:#bbb;margin-top:5px}.edition{font-size:11px;color:#e6bd45}
+.card{background:linear-gradient(145deg,#292929,#151515);border:1px solid #655326;border-radius:16px;padding:18px;margin-top:18px;box-shadow:0 4px 15px #000}
+h3{color:#e9c34f;margin:0 0 16px;font-size:17px}
+.price{font-size:34px;font-weight:bold;margin:12px 0}.muted{color:#aaa;font-size:13px;line-height:1.5}
+button{background:#292929;color:white;border:1px solid #d6ae3b;border-radius:9px;padding:13px 8px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}.refresh{width:100%;margin-top:15px}.gold{background:#e9bd37;color:#171717}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.signal{font-size:34px;font-weight:bold;margin:12px 0;color:#e9bd37}.buy{color:#42d68b}.sell{color:#ff6666}.wait{color:#e9bd37}
+input{width:100%;padding:13px;border-radius:8px;border:1px solid #a88a37;background:#111;color:white;margin:8px 0}
+.stat{background:#111;padding:13px;border-radius:9px;border:1px solid #383838;min-width:0}
+.stat strong{display:block;margin-top:8px;font-size:18px;color:#e9bd37;overflow-wrap:anywhere}
+.status{color:#e9bd37;font-size:12px;line-height:1.5}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:460px}
+th,td{text-align:left;padding:11px 8px;border-bottom:1px solid #383838;white-space:nowrap}
+th{color:#e9c34f}td{color:#ddd}.pill{font-weight:bold}
+.footer{text-align:center;color:#888;font-size:11px;padding:25px 0}
+.note{border-left:3px solid #d6ae3b;padding-left:10px}
 </style>
 </head>
-
 <body>
-
 <header>
- <div>
-  <div class="logo">🖤 LOH GOLD AI</div>
-  <div class="subtitle">PRIVATE GOLD TRADING SCANNER</div>
- </div>
- <div class="edition">FREE EDITION</div>
+  <div><div class="logo">🖤 LOH GOLD AI</div><div class="subtitle">MULTI-TIMEFRAME GOLD SCANNER</div></div>
+  <div class="edition">FREE EDITION</div>
 </header>
 
 <div class="card">
- <h3>LIVE GOLD MARKET</h3>
- <div class="muted">XAU / USD</div>
- <div class="price" id="price">---</div>
- <div class="muted" id="updated">Waiting for market data</div>
- <button class="refresh" onclick="scanMarket()">REFRESH GOLD PRICE</button>
+  <h3>LIVE GOLD MARKET</h3>
+  <div class="muted">XAU / USD · Last completed 1-minute candle</div>
+  <div class="price" id="price">---</div>
+  <div class="muted" id="updated">Waiting for market data</div>
+  <button class="refresh" id="scanButton" onclick="scanMarket()">SCAN ALL 6 TIMEFRAMES</button>
 </div>
 
 <div class="card">
- <h3>API CONNECTION</h3>
- <div class="muted">
- Enter your Twelve Data API key to activate live market analysis.
- </div>
- <input id="apiKey" type="password" placeholder="Enter Twelve Data API key">
- <button class="refresh" onclick="saveKey()">CONNECT API KEY</button>
- <p class="status" id="connection">Not connected</p>
+  <h3>API CONNECTION</h3>
+  <div class="muted">Enter your Twelve Data API key. It is kept only in this page's memory and is not saved into the website source.</div>
+  <input id="apiKey" type="password" autocomplete="off" placeholder="Enter Twelve Data API key">
+  <button class="refresh" id="connectButton" onclick="saveKey()">CONNECT API KEY</button>
+  <p class="status" id="connection">Not connected</p>
 </div>
 
 <div class="card">
- <h3>AI MARKET SIGNAL</h3>
- <div class="signal wait" id="signal">WAIT</div>
- <p id="reason" class="muted">
- Waiting for verified market analysis.
- </p>
- <p id="confidence" class="status">No verified signal available</p>
+  <h3>AI MARKET SIGNAL</h3>
+  <div class="signal wait" id="signal">WAIT</div>
+  <p id="reason" class="muted">Waiting for six-timeframe confirmation.</p>
+  <p id="confidence" class="status">No verified signal available</p>
 </div>
 
 <div class="card">
- <h3>SELECT TIMEFRAME</h3>
- <div class="grid timeframes">
-  <button class="selected" data-tf="1min">1 MIN</button>
-  <button data-tf="5min">5 MIN</button>
-  <button data-tf="15min">15 MIN</button>
-  <button data-tf="1h">1 HOUR</button>
-  <button data-tf="4h">4 HOURS</button>
-  <button data-tf="1day">1 DAY</button>
- </div>
- <p class="muted" id="selected">Selected timeframe: 1 MIN</p>
+  <h3>SIX-TIMEFRAME CONFIRMATION</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>TIMEFRAME</th><th>DIRECTION</th><th>EMA 20 / 50</th><th>RSI (14)</th></tr></thead>
+      <tbody id="timeframeRows">
+        <tr><td colspan="4">Waiting for market data</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">All six intervals are analysed on every scan. A signal requires at least 5 of 6 timeframes to agree. This is an agreement score, not a probability of profit.</p>
 </div>
 
 <div class="card">
- <h3>TRADE ANALYSIS</h3>
- <div class="grid">
-  <div class="stat">
-   <div class="muted">ENTRY PRICE</div>
-   <strong id="entry">---</strong>
+  <h3>MARKET DETAILS · 1 MINUTE</h3>
+  <div class="grid">
+    <div class="stat"><div class="muted">ENTRY REFERENCE</div><strong id="entry">---</strong></div>
+    <div class="stat"><div class="muted">ATR (14)</div><strong id="atr">---</strong></div>
+    <div class="stat"><div class="muted">EMA 20</div><strong id="ema20">---</strong></div>
+    <div class="stat"><div class="muted">EMA 50</div><strong id="ema50">---</strong></div>
+    <div class="stat"><div class="muted">RSI (14)</div><strong id="rsi">---</strong></div>
+    <div class="stat"><div class="muted">TREND</div><strong id="trend">---</strong></div>
+    <div class="stat"><div class="muted">ILLUSTRATIVE STOP</div><strong id="sl">---</strong></div>
+    <div class="stat"><div class="muted">ILLUSTRATIVE TARGET</div><strong id="tp">---</strong></div>
   </div>
-  <div class="stat">
-   <div class="muted">STOP LOSS</div>
-   <strong id="sl">---</strong>
-  </div>
-  <div class="stat">
-   <div class="muted">TAKE PROFIT</div>
-   <strong id="tp">---</strong>
-  </div>
-  <div class="stat">
-   <div class="muted">RSI (14)</div>
-   <strong id="rsi">---</strong>
-  </div>
-  <div class="stat">
-   <div class="muted">EMA 9</div>
-   <strong id="ema9">---</strong>
-  </div>
-  <div class="stat">
-   <div class="muted">EMA 21</div>
-   <strong id="ema21">---</strong>
-  </div>
- </div>
+  <p class="muted note">Stop and target are simple ATR-based reference levels, not personalised trade instructions. Confirm spreads, execution and risk before trading.</p>
 </div>
 
 <div class="card">
- <h3>MARKET INFORMATION</h3>
- <p class="muted" id="trend">Trend: Waiting for data</p>
- <p class="muted" id="volatility">Volatility: Waiting for data</p>
- <p class="muted" id="lastScan">Last scan: Not scanned</p>
+  <h3>MARKET INFORMATION</h3>
+  <p class="muted" id="scanStatus">Scan status: Waiting</p>
+  <p class="muted" id="lastScan">Last scan: Not scanned</p>
+  <p class="muted" id="dataSource">Data source: Twelve Data</p>
 </div>
 
 <div class="card">
- <h3>RISK WARNING</h3>
- <p class="muted">
- This scanner uses technical indicators. Signals are not guaranteed
- to be profitable. Always verify market conditions and manage your risk.
- Never risk money you cannot afford to lose.
- </p>
+  <h3>RISK WARNING</h3>
+  <p class="muted">This scanner applies basic EMA and RSI rules to market candles. It is not machine-learning AI and cannot predict prices. Signals can be wrong, delayed or unavailable. Never risk money you cannot afford to lose.</p>
 </div>
-
-<div class="footer">
- LOH GOLD AI © 2026<br>
- XAU/USD ONLY | Technical Analysis Scanner
-</div>
+<div class="footer">LOH GOLD AI © 2026 · XAU/USD ONLY · TECHNICAL ANALYSIS</div>
 
 <script>
-let timeframe = "1min";
+const TIMEFRAMES = [
+  {interval:"1min", label:"1 MIN"},
+  {interval:"5min", label:"5 MIN"},
+  {interval:"15min", label:"15 MIN"},
+  {interval:"1h", label:"1 HOUR"},
+  {interval:"4h", label:"4 HOURS"},
+  {interval:"1day", label:"1 DAY"}
+];
 let apiKey = "";
-
+let scanInProgress = false;
 const $ = id => document.getElementById(id);
 
-function saveKey(){
- apiKey = $("apiKey").value.trim();
-
- if(!apiKey){
-  $("connection").textContent = "Please enter your API key.";
-  return;
- }
-
- $("connection").textContent = "API key entered. Testing connection...";
- scanMarket();
-}
-
-document.querySelectorAll("[data-tf]").forEach(button=>{
- button.addEventListener("click",()=>{
-  document.querySelectorAll("[data-tf]").forEach(b=>
-   b.classList.remove("selected")
-  );
-
-  button.classList.add("selected");
-  timeframe = button.dataset.tf;
-
-  $("selected").textContent =
-   "Selected timeframe: " + button.textContent;
-
-  if(apiKey) scanMarket();
- });
-});
-
-function ema(values, period){
- const multiplier = 2/(period+1);
- let result = values[0];
-
- for(let i=1;i<values.length;i++){
-  result = (values[i]-result)*multiplier+result;
- }
-
- return result;
-}
-
-function calculateRSI(values){
- let gains=0, losses=0;
-
- for(let i=values.length-15;i<values.length-1;i++){
-  let difference=values[i+1]-values[i];
-
-  if(difference>0) gains+=difference;
-  else losses+=Math.abs(difference);
- }
-
- if(losses===0) return 100;
-
- let rs=(gains/14)/(losses/14);
- return 100-(100/(1+rs));
-}
-
-function calculateATR(candles){
- let total=0;
-
- for(let i=candles.length-14;i<candles.length;i++){
-  let current=candles[i];
-  let previous=candles[i-1];
-
-  let range=Math.max(
-   current.high-current.low,
-   Math.abs(current.high-previous.close),
-   Math.abs(current.low-previous.close)
-  );
-
-  total+=range;
- }
-
- return total/14;
-}
-
 function formatPrice(value){
- return "$"+value.toLocaleString("en-US",{
-  minimumFractionDigits:2,
-  maximumFractionDigits:2
- });
+  return "$" + Number(value).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-
-function resetAnalysis(message){
- $("price").textContent="---";
- $("signal").textContent="WAIT";
- $("signal").className="signal wait";
- $("reason").textContent=message;
- $("confidence").textContent="No verified signal available";
-
- ["entry","sl","tp","rsi","ema9","ema21"].forEach(id=>{
-  $(id).textContent="---";
- });
+function ema(values, period){
+  if(values.length < period) throw new Error("Not enough candles for EMA " + period);
+  const multiplier = 2/(period+1);
+  let result = values[0];
+  for(let i=1;i<values.length;i++) result = (values[i]-result)*multiplier+result;
+  return result;
 }
-
-async function scanMarket(){
-
- if(!apiKey){
-  $("connection").textContent="API key required.";
-  return;
- }
-
- $("connection").textContent="Fetching verified market data...";
-
- try{
-  const url =
-   "https://api.twelvedata.com/time_series"+
-   "?symbol=XAU/USD"+
-   "&interval="+encodeURIComponent(timeframe)+
-   "&outputsize=100"+
-   "&apikey="+encodeURIComponent(apiKey);
-
+function calculateRSI(values){
+  if(values.length < 15) throw new Error("Not enough candles for RSI");
+  let gains=0, losses=0;
+  for(let i=values.length-14;i<values.length;i++){
+    const change=values[i]-values[i-1];
+    if(change>0) gains+=change;
+    else losses+=Math.abs(change);
+  }
+  if(losses===0) return gains===0 ? 50 : 100;
+  const rs=(gains/14)/(losses/14);
+  return 100-(100/(1+rs));
+}
+function calculateATR(candles){
+  if(candles.length < 15) throw new Error("Not enough candles for ATR");
+  let total=0;
+  for(let i=candles.length-14;i<candles.length;i++){
+    const c=candles[i], prev=candles[i-1];
+    total+=Math.max(c.high-c.low,Math.abs(c.high-prev.close),Math.abs(c.low-prev.close));
+  }
+  return total/14;
+}
+async function fetchTimeframe(interval){
+  const url="https://api.twelvedata.com/time_series?symbol=XAU/USD&interval="+
+    encodeURIComponent(interval)+"&outputsize=100&apikey="+encodeURIComponent(apiKey);
   const response=await fetch(url);
-
-  if(!response.ok){
-   throw new Error("Market data connection failed.");
-  }
-
+  if(!response.ok) throw new Error("HTTP "+response.status+" for "+interval);
   const data=await response.json();
-
-  if(data.status==="error" || !data.values){
-   throw new Error(data.message || "No market candles returned.");
+  if(data.status==="error" || !Array.isArray(data.values)){
+    throw new Error(data.message || "No candle data for "+interval);
   }
-
   const candles=data.values.map(c=>({
-   open:Number(c.open),
-   high:Number(c.high),
-   low:Number(c.low),
-   close:Number(c.close),
-   time:c.datetime
+    open:Number(c.open),high:Number(c.high),low:Number(c.low),
+    close:Number(c.close),time:c.datetime
   })).reverse();
-
-  if(candles.length<30 ||
-   candles.some(c=>!Number.isFinite(c.close)||
-    !Number.isFinite(c.high)||!Number.isFinite(c.low))){
-   throw new Error("Insufficient or invalid market data.");
+  if(candles.length<55 || candles.some(c=>!Number.isFinite(c.close)||!Number.isFinite(c.high)||!Number.isFinite(c.low))){
+    throw new Error("Insufficient or invalid candle data for "+interval);
   }
-
   const closes=candles.map(c=>c.close);
-  const current=closes[closes.length-1];
-
-  const fast=ema(closes.slice(-50),9);
-  const slow=ema(closes.slice(-50),21);
-  const rsiValue=calculateRSI(closes);
-  const atr=calculateATR(candles);
-
-  if(!Number.isFinite(atr)||atr<=0||
-     !Number.isFinite(rsiValue)){
-   throw new Error("Could not calculate indicators.");
-  }
-
-  $("price").textContent=formatPrice(current);
-  $("updated").textContent=
-   "Market candle: "+candles[candles.length-1].time;
-
-  $("entry").textContent=formatPrice(current);
-  $("rsi").textContent=rsiValue.toFixed(2);
-  $("ema9").textContent=formatPrice(fast);
-  $("ema21").textContent=formatPrice(slow);
-
-  $("volatility").textContent=
-   "ATR (14): "+formatPrice(atr);
-
+  const fast=ema(closes.slice(-60),20);
+  const slow=ema(closes.slice(-60),50);
+  const rsi=calculateRSI(closes);
+  const last=closes[closes.length-1];
   let direction="WAIT";
-  let explanation="Indicators do not currently agree.";
-  let stop=0;
-  let target=0;
-
-  if(fast>slow && rsiValue>=52 && rsiValue<=70){
-   direction="BUY";
-   explanation="Bullish EMA trend with positive RSI momentum.";
-   stop=current-(atr*1.5);
-   target=current+(atr*3);
-  }
-  else if(fast<slow && rsiValue>=30 && rsiValue<=48){
-   direction="SELL";
-   explanation="Bearish EMA trend with negative RSI momentum.";
-   stop=current+(atr*1.5);
-   target=current-(atr*3);
-  }
-
-  $("signal").textContent=direction;
-  $("signal").className=
-   "signal "+(direction==="BUY"?"buy":
-   direction==="SELL"?"sell":"wait");
-
-  $("reason").textContent=explanation;
-
-  $("confidence").textContent=
-   direction==="WAIT"?
-   "No trade recommendation available":
-   "Technical conditions met. Verify before trading.";
-
-  $("trend").textContent=
-   "Trend: "+(fast>slow?"Bullish":
-   fast<slow?"Bearish":"Neutral");
-
-  $("sl").textContent=
-   direction==="WAIT"?"---":formatPrice(stop);
-
-  $("tp").textContent=
-   direction==="WAIT"?"---":formatPrice(target);
-
-  $("lastScan").textContent=
-   "Last scan: "+new Date().toLocaleString();
-
-  $("connection").textContent=
-   "Connected - market data received successfully.";
-
- }catch(error){
-
-  resetAnalysis(error.message);
-
-  $("connection").textContent=
-   "Connection error: "+error.message;
-
-  $("trend").textContent="Trend: Unavailable";
-  $("volatility").textContent="Volatility: Unavailable";
-
-  console.error(error);
- }
+  if(fast>slow && rsi>=52 && rsi<=70) direction="BUY";
+  else if(fast<slow && rsi>=30 && rsi<=48) direction="SELL";
+  return {interval,last,time:candles[candles.length-1].time,ema20:fast,ema50:slow,rsi,atr:calculateATR(candles),direction};
 }
-
+function setSignal(direction, reason, agreement){
+  $("signal").textContent=direction;
+  $("signal").className="signal "+(direction==="BUY"?"buy":direction==="SELL"?"sell":"wait");
+  $("reason").textContent=reason;
+  $("confidence").textContent=agreement+" of 6 timeframes agree. Agreement is not a win-rate or profit probability.";
+}
+function resetDisplay(message){
+  $("signal").textContent="WAIT";
+  $("signal").className="signal wait";
+  $("reason").textContent=message;
+  $("confidence").textContent="No complete six-timeframe result available.";
+  $("timeframeRows").innerHTML='<tr><td colspan="4">Scan incomplete — no combined signal.</td></tr>';
+  ["entry","atr","ema20","ema50","rsi","trend","sl","tp","price"].forEach(id=>$(id).textContent="---");
+}
+async function saveKey(){
+  const entered=$("apiKey").value.trim();
+  if(!entered){$("connection").textContent="Please enter your API key.";return;}
+  apiKey=entered;
+  await scanMarket();
+}
+async function scanMarket(){
+  if(scanInProgress) return;
+  if(!apiKey){$("connection").textContent="API key required.";return;}
+  scanInProgress=true;
+  $("scanButton").disabled=true;
+  $("connectButton").disabled=true;
+  $("scanStatus").textContent="Scan status: Fetching all six timeframes...";
+  $("connection").textContent="Requesting six market intervals...";
+  try{
+    // Six requests are made together. A combined signal is shown only if all six succeed.
+    const results=await Promise.all(TIMEFRAMES.map(tf=>fetchTimeframe(tf.interval)));
+    const buyCount=results.filter(r=>r.direction==="BUY").length;
+    const sellCount=results.filter(r=>r.direction==="SELL").length;
+    let overall="WAIT";
+    let explanation="Timeframes are mixed or do not meet the 5-of-6 confirmation rule.";
+    if(buyCount>=5){overall="BUY";explanation="Bullish EMA 20/50 and RSI conditions agree on at least five of six timeframes.";}
+    else if(sellCount>=5){overall="SELL";explanation="Bearish EMA 20/50 and RSI conditions agree on at least five of six timeframes.";}
+    const oneMin=results[0];
+    const agreement=Math.max(buyCount,sellCount);
+    $("price").textContent=formatPrice(oneMin.last);
+    $("updated").textContent="Latest 1-minute candle: "+oneMin.time;
+    $("entry").textContent=formatPrice(oneMin.last);
+    $("atr").textContent=formatPrice(oneMin.atr);
+    $("ema20").textContent=formatPrice(oneMin.ema20);
+    $("ema50").textContent=formatPrice(oneMin.ema50);
+    $("rsi").textContent=oneMin.rsi.toFixed(2);
+    $("trend").textContent=oneMin.ema20>oneMin.ema50?"Bullish":oneMin.ema20<oneMin.ema50?"Bearish":"Neutral";
+    if(overall==="BUY"){
+      $("sl").textContent=formatPrice(oneMin.last-oneMin.atr*1.5);
+      $("tp").textContent=formatPrice(oneMin.last+oneMin.atr*3);
+    }else if(overall==="SELL"){
+      $("sl").textContent=formatPrice(oneMin.last+oneMin.atr*1.5);
+      $("tp").textContent=formatPrice(oneMin.last-oneMin.atr*3);
+    }else{$("sl").textContent="---";$("tp").textContent="---";}
+    $("timeframeRows").innerHTML=results.map((r,i)=>{
+      const color=r.direction==="BUY"?"#42d68b":r.direction==="SELL"?"#ff7777":"#e9bd37";
+      return "<tr><td>"+TIMEFRAMES[i].label+"</td><td class='pill' style='color:"+color+"'>"+r.direction+"</td><td>"+formatPrice(r.ema20)+" / "+formatPrice(r.ema50)+"</td><td>"+r.rsi.toFixed(1)+"</td></tr>";
+    }).join("");
+    setSignal(overall,explanation,agreement);
+    $("lastScan").textContent="Last scan: "+new Date().toLocaleString();
+    $("scanStatus").textContent="Scan status: Complete — all six timeframes received.";
+    $("connection").textContent="Connected — all six market intervals received successfully.";
+  }catch(error){
+    resetDisplay("Six-timeframe scan failed: "+error.message+" Check API access, quota and symbol availability, then try again.");
+    $("connection").textContent="Connection/data error: "+error.message;
+    $("scanStatus").textContent="Scan status: Incomplete — no signal generated.";
+    console.error(error);
+  }finally{
+    scanInProgress=false;
+    $("scanButton").disabled=false;
+    $("connectButton").disabled=false;
+  }
+}
 </script>
 </body>
 </html>
